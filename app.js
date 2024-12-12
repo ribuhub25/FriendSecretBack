@@ -1,6 +1,7 @@
 var express = require('express');
 const dotenv = require("dotenv");
 const cors = require("cors");
+const port = process.env.PORT || 4000;
 //const { auth } = require('express-oauth2-jwt-bearer');
 //const axios = require('axios');
 const app = express();
@@ -27,12 +28,32 @@ const sortRouter = require("./routes/sort");
 const coupleRouter = require("./routes/couple");
 
 const { default: mongoose } = require('mongoose');
-mongoose
-  .connect(process.env.DB_CONNECTION)
-  .then((connection) => {
-    console.log("Connected succesfull");
-  })
-  .catch(console.log);
+const uri = process.env.DB_CONNECTION;
+const clientOptions = {
+  serverApi: { version: "1", strict: true, deprecationErrors: true },
+};
+async function run() {
+  try {
+    // Create a Mongoose client with a MongoClientOptions object to set the Stable API version
+    await mongoose.connect(uri, clientOptions);
+    await mongoose.connection.db.admin().command({ ping: 1 });
+    console.log(
+      "Pinged your deployment. You successfully connected to MongoDB!"
+    );
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await mongoose.disconnect();
+  }
+}
+run().catch(console.dir);
+
+
+// mongoose
+//   .connect(process.env.DB_CONNECTION)
+//   .then((connection) => {
+//     console.log("Connected succesfull");
+//   })
+//   .catch(console.log);
 
 //Middlewares
 app.use(express.json());
@@ -55,8 +76,10 @@ app.use("/couple", coupleRouter);
 //   const userinfo = response.data;
 //   res.send("OK"); 
 // });
-
-//Add listener
-app.listen(3500, () => {
-    console.log("Listening");
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`);
 });
+//Add listener
+// app.listen(3500, () => {
+//     console.log("Listening");
+// });
