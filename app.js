@@ -22,11 +22,11 @@ const jwtCheck = auth({
 dotenv.config({ path: './config.env' });
 
 //Local Imports
-const usersRouter = require("../routes/user");
-const profileRouter = require("../routes/profile");
-const welcomeRouter = require("../routes/welcome");
-const sortRouter = require("../routes/sort");
-const coupleRouter = require("../routes/couple");
+const usersRouter = require("./routes/user");
+const profileRouter = require("./routes/profile");
+const welcomeRouter = require("./routes/welcome");
+const sortRouter = require("./routes/sort");
+const coupleRouter = require("./routes/couple");
 
 const { default: mongoose } = require('mongoose');
 mongoose
