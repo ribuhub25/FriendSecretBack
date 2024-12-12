@@ -38,6 +38,9 @@ mongoose
 app.use(express.json());
 
 //Routes
+app.get("/", (req, res) => {
+  res.send("Hola Mundo");
+})
 app.use("/users", usersRouter);
 app.use("/sorts", sortRouter);
 app.use("/couple", coupleRouter);
